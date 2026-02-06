@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Цвет статусбара для Android и PWA -->
+    <meta name="theme-color" content="#1623C1">
+    
+    <!-- Настройки для iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Для iOS 15+ - цвет статусбара -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#1623C1">
+    
+    <!-- Для Microsoft Edge -->
+    <meta name="msapplication-TileColor" content="#1623C1">
+    <meta name="msapplication-navbutton-color" content="#1623C1">
+    
+    <title>ЛИнТех 28</title>
+    
+    <!-- Safari pinned tab color -->
+    <meta name="apple-mobile-web-app-title" content="ЛИнТех">
+    <meta name="application-name" content="ЛИнТех 28">
+    
+    <style>
+        /* ... остальные стили без изменений ... */
+        
+        /* Если нужно, чтобы контент не заезжал под статусбар на iOS */
+        @supports (padding-top: env(safe-area-inset-top)) {
+            .header {
+                padding-top: calc(15px + env(safe-area-inset-top));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ... остальное содержимое без изменений ... -->
+</body>
+</html>
