@@ -71,6 +71,26 @@
             object-fit: contain;
         }
 
+        /* Стили для экрана загрузки PWA */
+        .pwa-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: white;
+        }
+
+        .loading-gif {
+            width: 200px;
+            height: 200px;
+            opacity: 1;
+            transition: opacity 0.7s ease-out;
+        }
+
+        .loading-gif.fade-out {
+            opacity: 0;
+        }
+
         .hidden {
             display: none !important;
         }
@@ -93,11 +113,9 @@
         </div>
     </div>
 
-    <!-- Основное приложение (только для PWA) -->
-    <div id="appContent" class="hidden">
-        <!-- Здесь будет ваше основное приложение -->
-        <h1>Добро пожаловать в ЛИнТех 28</h1>
-        <p>Приложение успешно запущено как PWA</p>
+    <!-- Экран загрузки для PWA -->
+    <div id="pwaLoading" class="pwa-loading hidden">
+        <img src="loadgif_fromCheckingForPWA.gif" alt="Загрузка" class="loading-gif">
     </div>
 
     <script>
@@ -112,15 +130,23 @@
         // Получаем элементы DOM
         const desktopMessage = document.getElementById('desktopMessage');
         const phoneInstall = document.getElementById('phoneInstall');
-        const appContent = document.getElementById('appContent');
+        const pwaLoading = document.getElementById('pwaLoading');
+        const loadingGif = document.querySelector('.loading-gif');
 
         // Логика отображения
         if (isPWA) {
-            // Показываем основное приложение
-            appContent.classList.remove('hidden');
+            // Показываем гифку загрузки
+            pwaLoading.classList.remove('hidden');
             
-            // Здесь можно добавить код вашего основного приложения
-            console.log('PWA запущено');
+            // Через 2 секунды запускаем fade out и редирект
+            setTimeout(() => {
+                loadingGif.classList.add('fade-out');
+                
+                // После завершения анимации fade out делаем редирект
+                setTimeout(() => {
+                    window.location.href = 'indexFromPWA.html';
+                }, 700);
+            }, 2000);
             
         } else if (isMobile && !isTV) {
             // Показываем инструкцию по установке PWA
