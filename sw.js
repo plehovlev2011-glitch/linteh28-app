@@ -1,11 +1,12 @@
-// Простой Service Worker для кэширования
-const CACHE_NAME = 'lintech-v1';
+const CACHE_NAME = 'lintech-v2';
 const urlsToCache = [
   '/',
   'index.html',
+  'indexFromPWA.html',
   'openonyourphone.png',
   'openaspwa.png',
-  'openaspwa_animator.gif'
+  'openaspwa_animator.gif',
+  'loadgif_fromCheckingForPWA.gif'
 ];
 
 self.addEventListener('install', event => {
