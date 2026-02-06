@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>ЛИнТех 28</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .desktop-message {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .desktop-message img {
+            max-width: 300px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .phone-install {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .install-image {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .install-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .gif-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            max-height: 50vh;
+            object-fit: contain;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Сообщение для компьютера/TV -->
+    <div id="desktopMessage" class="desktop-message hidden">
+        <img src="openonyourphone.png" alt="Откройте на телефоне">
+        <p>Откройте это приложение на вашем телефоне</p>
+    </div>
+
+    <!-- Инструкция по установке PWA -->
+    <div id="phoneInstall" class="phone-install hidden">
+        <div class="install-image">
+            <img src="openaspwa.png" alt="Добавить как PWA">
+        </div>
+        <div class="gif-container">
+            <img src="openaspwa_animator.gif" alt="Инструкция по установке">
+        </div>
+    </div>
+
+    <!-- Основное приложение (только для PWA) -->
+    <div id="appContent" class="hidden">
+        <!-- Здесь будет ваше основное приложение -->
+        <h1>Добро пожаловать в ЛИнТех 28</h1>
+        <p>Приложение успешно запущено как PWA</p>
+    </div>
+
+    <script>
+        // Проверяем, запущено ли приложение как PWA
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
+                     window.navigator.standalone === true;
+
+        // Проверяем тип устройства
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTV = /SmartTV|Android TV|Google TV|AppleTV|tvOS/i.test(navigator.userAgent);
+
+        // Получаем элементы DOM
+        const desktopMessage = document.getElementById('desktopMessage');
+        const phoneInstall = document.getElementById('phoneInstall');
+        const appContent = document.getElementById('appContent');
+
+        // Логика отображения
+        if (isPWA) {
+            // Показываем основное приложение
+            appContent.classList.remove('hidden');
+            
+            // Здесь можно добавить код вашего основного приложения
+            console.log('PWA запущено');
+            
+        } else if (isMobile && !isTV) {
+            // Показываем инструкцию по установке PWA
+            phoneInstall.classList.remove('hidden');
+            
+            // Предлагаем установку PWA
+            let deferredPrompt;
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                // Можно добавить кнопку для установки
+                setTimeout(() => {
+                    if (deferredPrompt && confirm('Установить приложение ЛИнТех 28 на главный экран?')) {
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then(() => {
+                            deferredPrompt = null;
+                        });
+                    }
+                }, 2000);
+            });
+            
+        } else {
+            // Показываем сообщение для компьютера/TV
+            desktopMessage.classList.remove('hidden');
+        }
+
+        // Регистрация Service Worker для PWA
+        if ('serviceWorker' in navigator && isMobile) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(error => {
+                    console.log('Ошибка регистрации Service Worker:', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
